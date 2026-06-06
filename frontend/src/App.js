@@ -195,7 +195,7 @@ function App() {
   const [scanInput, setScanInput] = useState("");
   const [liveWeight, setLiveWeight] = useState(0);
   const [stable, setStable] = useState(false);
-  const API = "http://127.0.0.1:8000";
+  const API = "https://weighingautomationback-production.up.railway.app";
 
   const registerPatient = async () => {
     const res = await axios.post(`${API}/register`, {
