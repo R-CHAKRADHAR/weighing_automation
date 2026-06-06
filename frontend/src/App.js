@@ -73,6 +73,7 @@ function App() {
       }
     }
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
 
   const interval = setInterval(async () => {
@@ -95,7 +96,7 @@ function App() {
 
   return () => clearInterval(interval);
 
-}, [searchBarcode, fetchPatient]);
+}, []);
 
   return (
     <div className="container">
