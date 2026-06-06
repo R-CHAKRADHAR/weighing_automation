@@ -73,19 +73,16 @@ function App() {
       }
     }
   };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
+ useEffect(() => {
 
   const interval = setInterval(async () => {
 
     try {
-
       const res = await axios.get(`${API}/live-weight`);
 
       setLiveWeight(res.data.live_weight);
       setStable(res.data.stable);
 
-      // 🔥 Auto refresh patient data after stable save
       if (res.data.stable && searchBarcode) {
         fetchPatient();
       }
@@ -96,7 +93,7 @@ function App() {
 
   return () => clearInterval(interval);
 
-}, []);
+}, [fetchPatient, searchBarcode]);
 
   return (
     <div className="container">
