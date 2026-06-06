@@ -56,7 +56,7 @@ function App() {
   } catch {
     alert("Patient not found");
   }
-}, [searchBarcode, fetchPatient]);
+}, [searchBarcode]);
   const handleScan = async (e) => {
     if (e.key === "Enter") {
       try {
@@ -95,7 +95,7 @@ function App() {
 
   return () => clearInterval(interval);
 
-}, [searchBarcode]);
+}, [searchBarcode, fetchPatient]);
 
   return (
     <div className="container">
