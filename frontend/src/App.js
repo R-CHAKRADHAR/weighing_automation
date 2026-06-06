@@ -1,162 +1,4 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import "./App.css";
-
-// import {
-//   Chart as ChartJS,
-//   LineElement,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from "chart.js";
-
-// import { Line } from "react-chartjs-2";
-
-// ChartJS.register(
-//   LineElement,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
-
-// function App() {
-//   const [name, setName] = useState("");
-//   const [age, setAge] = useState("");
-//   const [barcode, setBarcode] = useState("");
-//   const [barcodeImage, setBarcodeImage] = useState("");
-//   const [searchBarcode, setSearchBarcode] = useState("");
-//   const [patient, setPatient] = useState(null);
-
-//   const API = "http://127.0.0.1:8000";
-
-//   const registerPatient = async () => {
-//     const res = await axios.post(`${API}/register`, {
-//       name,
-//       age: parseInt(age),
-//     });
-
-//     setBarcode(res.data.barcode);
-//     setBarcodeImage(res.data.barcode_image);
-//   };
-
-//   const fetchPatient = async () => {
-//     try {
-//       const res = await axios.get(`${API}/patient/${searchBarcode}`);
-//       setPatient(res.data);
-//     } catch {
-//       alert("Patient not found");
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Smart Patient Weight System</h1>
-
-//       <div className="grid">
-
-//         {/* Register Card */}
-//         <div className="card">
-//           <h2>Register Patient</h2>
-
-//           <input
-//             placeholder="Patient Name"
-//             onChange={(e) => setName(e.target.value)}
-//           />
-
-//           <input
-//             placeholder="Age"
-//             onChange={(e) => setAge(e.target.value)}
-//           />
-
-//           <button onClick={registerPatient}>Register</button>
-
-//           {barcode && (
-//             <div className="barcode-box">
-//               <p><b>Barcode:</b> {barcode}</p>
-
-//               <img src={barcodeImage} alt="barcode" />
-
-//               <a href={barcodeImage} download>
-//                 <button className="secondary">Download</button>
-//               </a>
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Search Card */}
-//         <div className="card">
-//           <h2>Search Patient</h2>
-
-//           <div className="search-row">
-//             <input
-//               placeholder="Enter Barcode"
-//               onChange={(e) => setSearchBarcode(e.target.value)}
-//             />
-//             <button onClick={fetchPatient}>Search</button>
-//           </div>
-
-//           {patient && (
-//             <div className="patient-info">
-//               <h3>{patient.name} (Age: {patient.age})</h3>
-
-//               <h4>Weight History</h4>
-
-//               {/* 🔹 GRAPH */}
-//               <Line
-//                 data={{
-//                   labels: patient.weights.map(w =>
-//                     new Date(w.timestamp).toLocaleTimeString()
-//                   ),
-//                   datasets: [
-//                     {
-//                       label: "Weight (kg)",
-//                       data: patient.weights.map(w => w.weight),
-//                       borderWidth: 2,
-//                       tension: 0.3,
-//                     },
-//                   ],
-//                 }}
-//                 options={{
-//                   responsive: true,
-//                   plugins: {
-//                     legend: {
-//                       display: true,
-//                     },
-//                   },
-//                   scales: {
-//                     y: {
-//                       beginAtZero: false,
-//                     },
-//                   },
-//                 }}
-//               />
-
-//               {/*  LIST (keep your original) */}
-//               <ul>
-//                 {patient.weights.map((w, i) => (
-//                   <li key={i}>
-//                     {w.weight} kg —{" "}
-//                     {new Date(w.timestamp).toLocaleString()}
-//                   </li>
-//                 ))}
-//               </ul>
-//             </div>
-//           )}
-//         </div>
-
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -207,14 +49,14 @@ function App() {
     setBarcodeImage(res.data.barcode_image);
   };
 
-  const fetchPatient = async () => {
-    try {
-      const res = await axios.get(`${API}/patient/${searchBarcode}`);
-      setPatient(res.data);
-    } catch {
-      alert("Patient not found");
-    }
-  };
+  const fetchPatient = useCallback(async () => {
+  try {
+    const res = await axios.get(`${API}/patient/${searchBarcode}`);
+    setPatient(res.data);
+  } catch {
+    alert("Patient not found");
+  }
+}, [searchBarcode, fetchPatient]);
   const handleScan = async (e) => {
     if (e.key === "Enter") {
       try {
